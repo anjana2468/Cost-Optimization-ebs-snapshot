@@ -26,9 +26,7 @@
 
  - Fetches all running EC2 instances.
 
- - Iterates over each snapshot and:
-
- - Deletes snapshots that have no volume attached.
+ - Iterates over each snapshot and deletes snapshots that have no volume attached.
 
  - Deletes snapshots if their volume doesn't exist or is detached.
 
