@@ -62,6 +62,10 @@ Set your Lambda function as the Target
 
 This allows automated daily or weekly snapshot cleanup!
 
+![Screenshot 2025-04-25 125349](https://github.com/user-attachments/assets/0aebbb8a-63e5-4b1d-bd1b-3e2537e54732)
+
+
+
 
 
 
