@@ -1,37 +1,69 @@
-import boto3
+AWS EBS Snapshot Cleanup - Lambda Function and Cloudwatch
+This project contains an AWS Lambda function written in Python that automatically cleans up old or unused EBS snapshots.
 
-def lambda_handler(event, context):
-    ec2 = boto3.client('ec2')
 
-    # Get all EBS snapshots
-    response = ec2.describe_snapshots(OwnerIds=['self'])
+ Overview
+This Lambda function:
 
-    # Get all active EC2 instance IDs
-    instances_response = ec2.describe_instances(Filters=[{'Name': 'instance-state-name', 'Values': ['running']}])
-    active_instance_ids = set()
+Lists all EBS snapshots owned by your AWS account
 
-    for reservation in instances_response['Reservations']:
-        for instance in reservation['Instances']:
-            active_instance_ids.add(instance['InstanceId'])
+Checks if each snapshot is attached to an existing volume
 
-    # Iterate through each snapshot and delete if it's not attached to any volume or the volume is not attached to a running instance
-    for snapshot in response['Snapshots']:
-        snapshot_id = snapshot['SnapshotId']
-        volume_id = snapshot.get('VolumeId')
+Deletes snapshots that:
 
-        if not volume_id:
-            # Delete the snapshot if it's not attached to any volume
-            ec2.delete_snapshot(SnapshotId=snapshot_id)
-            print(f"Deleted EBS snapshot {snapshot_id} as it was not attached to any volume.")
-        else:
-            # Check if the volume still exists
-            try:
-                volume_response = ec2.describe_volumes(VolumeIds=[volume_id])
-                if not volume_response['Volumes'][0]['Attachments']:
-                    ec2.delete_snapshot(SnapshotId=snapshot_id)
-                    print(f"Deleted EBS snapshot {snapshot_id} as it was taken from a volume not attached to any running instance.")
-            except ec2.exceptions.ClientError as e:
-                if e.response['Error']['Code'] == 'InvalidVolume.NotFound':
-                    # The volume associated with the snapshot is not found (it might have been deleted)
-                    ec2.delete_snapshot(SnapshotId=snapshot_id)
-                    print(f"Deleted EBS snapshot {snapshot_id} as its associated volume was not found.")
+Are not associated with any volume
+
+Are associated with a volume that no longer exists
+
+Are associated with a volume not attached to any running EC2 instance
+
+The function helps you reduce unnecessary storage costs by cleaning up unused snapshots.
+
+How it Works
+Connects to the EC2 service using boto3.
+
+Fetches all snapshots owned by your AWS account.
+
+Fetches all running EC2 instances.
+
+Iterates over each snapshot and:
+
+Deletes snapshots that have no volume attached.
+
+Deletes snapshots if their volume doesn't exist or is detached.
+
+ Deployment Steps
+Create a Lambda function in AWS Console.
+
+Copy and paste the Python code (lambda_function.py) into your Lambda function.
+
+Assign an IAM role to your Lambda with the following permissions:
+
+ec2:DescribeSnapshots
+
+ec2:DeleteSnapshot
+
+ec2:DescribeInstances
+
+ec2:DescribeVolumes
+
+(Optional) Set up a trigger using CloudWatch (EventBridge):
+
+Create a rule to run the Lambda on a schedule (e.g., daily).
+
+Scheduling with CloudWatch
+You can use Amazon EventBridge (formerly CloudWatch Events) to trigger this Lambda function automatically:
+
+Go to EventBridge → Rules → Create rule
+
+Set a Schedule (e.g., rate(1 day) or cron(0 2 * * ? *))
+
+Set your Lambda function as the Target
+
+This allows automated daily or weekly snapshot cleanup!
+
+
+
+
+
+           
