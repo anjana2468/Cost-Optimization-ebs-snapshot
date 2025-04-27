@@ -9,7 +9,7 @@
 
  - Checks if each snapshot is attached to an existing volume
 
- - Deletes snapshots that:
+### Deletes snapshots that:
 
  - Are not associated with any volume
 
