@@ -66,6 +66,15 @@ This allows automated daily or weekly snapshot cleanup!
 ![Screenshot 2025-04-25 125349](https://github.com/user-attachments/assets/0aebbb8a-63e5-4b1d-bd1b-3e2537e54732)
 
 
+How to Contribute Contributions are welcome! If you'd like to improve this project or add new features, feel free to fork the repository and submit a pull request.
+
+1.Fork the repository.
+
+2.Create a new branch with your feature/bug fix.
+
+3.Push the branch and open a pull request.
+
+License This project is open-source and available under the MIT License.
 
 
 
