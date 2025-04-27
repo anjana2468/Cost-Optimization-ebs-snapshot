@@ -1,25 +1,25 @@
-AWS EBS Snapshot Cleanup - Lambda Function and Cloudwatch
-This project contains an AWS Lambda function written in Python that automatically cleans up old or unused EBS snapshots.
+# AWS EBS Snapshot Cleanup - Lambda Function and Cloudwatch
+## This project contains an AWS Lambda function written in Python that automatically cleans up old or unused EBS snapshots.
 
 
- Overview
+ ## Overview
 This Lambda function:
 
-Lists all EBS snapshots owned by your AWS account
+ - Lists all EBS snapshots owned by your AWS account
 
-Checks if each snapshot is attached to an existing volume
+ - Checks if each snapshot is attached to an existing volume
 
-Deletes snapshots that:
+ - Deletes snapshots that:
 
-Are not associated with any volume
+ - Are not associated with any volume
 
-Are associated with a volume that no longer exists
+ - Are associated with a volume that no longer exists
 
-Are associated with a volume not attached to any running EC2 instance
+ - Are associated with a volume not attached to any running EC2 instance
 
-The function helps you reduce unnecessary storage costs by cleaning up unused snapshots.
+ - The function helps you reduce unnecessary storage costs by cleaning up unused snapshots.
 
-How it Works
+## How it Works
 Connects to the EC2 service using boto3.
 
 Fetches all snapshots owned by your AWS account.
